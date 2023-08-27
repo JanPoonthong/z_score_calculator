@@ -9,24 +9,33 @@
   </head>
 
   <body>
-    <h1>Z-score calculator</h1>
-    <p>Use this calculator to compute the z-score of a normal distribution.</p>
-    <form id="calculator_raw_score">
-      <div>
-        <label>Raw Score</label>
-        <input id="raw_score" type="text" />
-        <br />
-        <label>Population Mean</label>
-        <input id="population_mean" type="text" />
-        <br />
-        <label>Standard Deviation</label>
-        <input id="standard_deviation" type="text" />
+    <div id="calculator_graph">
+      <div id="caculator_container">
+        <div id="title_and_form">
+          <h1>Z-score calculator</h1>
+          <form id="calculator_raw_score">
+            <div id="input_form">
+              <div>
+                <label>Raw Score</label><br />
+                <input id="raw_score" type="text" />
+              </div>
+              <div>
+                <label>Population Mean</label>
+              </div>
+              <div>
+                <input id="population_mean" type="text" /><br />
+                <label>Standard Deviation</label>
+              </div>
+              <input id="standard_deviation" type="text" />
+            </div>
+            <div>
+              <button id="calculate" type="submit">Calculate</button>
+              <button id="clear">Clear</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <button type="submit">Calculate</button>
-        <button>Clear</button>
-      </div>
-    </form>
+    </div>
 
     <p><strong>Results:</strong></p>
     <p id="z_score"></p>
@@ -46,6 +55,7 @@
         <p id="standard_deviation_symbol">σ</p>
       </div>
     </div>
-    <script src="bundle.js"></script>
+    <script src="http://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>

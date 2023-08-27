@@ -1,3 +1,7 @@
+body {
+  padding: 30px;
+}
+
 #formula_container {
   display: flex;
   flex-direction: row;

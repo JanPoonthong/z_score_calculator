@@ -1,4 +1,4 @@
-import jstat from "jstat";
+import jstat from "https://cdn.jsdelivr.net/npm/jstat/+esm";
 
 let calculatorRawScoreForm = document.getElementById("calculator_raw_score");
 
