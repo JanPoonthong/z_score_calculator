@@ -1,6 +1,8 @@
-import jstat from "jstat";
+import jstat from "https://cdn.jsdelivr.net/npm/jstat/+esm";
 
 let calculatorRawScoreForm = document.getElementById("calculator_raw_score");
+let KeepFormulaAppearance = [];
+let oldDictValue = {} ;
 
 function countLeadingZeros(number) {
   return number.toExponential().split("-")[1];
@@ -37,13 +39,13 @@ function displayResult(
   populationMean,
   rawScore,
   probabilityXGreaterThanRawScore,
-  probabilityXLesserThanRawScore,
+  probabilityXLessThanRawScore,
   probabilityAtX,
 ) {
   document.getElementById("z_score").innerHTML = `Z Score: ${zScore}`;
   document.getElementById(
     "probability_x_lesser_than_raw_score",
-  ).innerHTML = `Probability of x < ${rawScore}: ${probabilityXLesserThanRawScore}`;
+  ).innerHTML = `Probability of x < ${rawScore}: ${probabilityXLessThanRawScore}`;
   document.getElementById(
     "probability_x_greater_than_raw_score",
   ).innerHTML = `Probability of x > ${rawScore}: ${probabilityXGreaterThanRawScore}`;
@@ -64,31 +66,51 @@ calculatorRawScoreForm.addEventListener("submit", (e) => {
 
   // Probability calculation
   let probabilityXGreaterThanRawScore = probability;
-  let probabilityXLesserThanRawScore = 1 - probabilityXGreaterThanRawScore;
+  let probabilityXLessThanRawScore = 1 - probabilityXGreaterThanRawScore;
   let probabilityAtX =
-    Math.round((probabilityXLesserThanRawScore - 0.5) * 100000) / 100000;
+    Math.round((probabilityXLessThanRawScore - 0.5) * 100000) / 100000;
   displayResult(
     zScore,
     populationMean,
     rawScore,
     probabilityXGreaterThanRawScore,
-    probabilityXLesserThanRawScore,
+    probabilityXLessThanRawScore,
     probabilityAtX,
   );
+  
+  let newDictValue = {
+    "rawScore": rawScore,
+    "populationMean": populationMean,
+    "standardDeviation": standardDeviation
+  };
 
+  if(objectsAreEqual(oldDictValue, newDictValue)){
+    return
+  } else if (Object.keys(oldDictValue).length === 0) {
+    displaySteps(rawScore, populationMean, standardDeviation, zScore);
+    oldDictValue = newDictValue;
+  } else if (oldDictValue != newDictValue) {
+    deleteDivFormulaContainer();
+    displaySteps(rawScore, populationMean, standardDeviation, zScore);
+    oldDictValue = newDictValue;
+  } 
+
+});
+
+function displaySteps(rawScore, populationMean, standardDeviation, zScore){
   // Step
-  // container Z-score and formula
+  // container Z-score and formula 1
   let divFormulaContainer = document.createElement("div");
   divFormulaContainer.setAttribute("id", "formula_container");
   document.body.appendChild(divFormulaContainer);
 
-  // Z-score
+  // Z-score 2
   let divWrapForZScore = document.createElement("div");
-  divWrapForZScore.setAttribute("id", "z_score");
+  divWrapForZScore.setAttribute("id", "Z_Score");
   divFormulaContainer.appendChild(divWrapForZScore);
 
   let spanForZScore = document.createElement("span");
-  spanForZScore.innerHTML = "Z score = ";
+  spanForZScore.innerHTML = " = ";
   divWrapForZScore.appendChild(spanForZScore);
 
   // Formula
@@ -110,4 +132,56 @@ calculatorRawScoreForm.addEventListener("submit", (e) => {
   let line = document.createElement("hr");
   divWrapForZScoreFormula.appendChild(line);
   divWrapForZScoreFormula.appendChild(standardDeviationSymbol);
-});
+
+  //Answer container 3
+  let divWrapAnswerContainer = document.createElement("div");
+  divWrapAnswerContainer.setAttribute("id", "AnswerContainer");
+  document.body.appendChild(divWrapAnswerContainer);
+
+  //Div Answer Z-score
+  let divWrapForAnswerZscore = document.createElement("div");
+  divWrapForAnswerZscore.setAttribute("id", "Z_score_Answer")
+  divWrapAnswerContainer.appendChild(divWrapForAnswerZscore);
+
+  // = Sign
+  let equalSign = document.createElement("p");
+  equalSign.setAttribute("id", "equalSign");
+  equalSign.innerHTML = "=";
+  divWrapAnswerContainer.appendChild(equalSign);
+
+  //Z-score Answer
+  let answerZscore = document.createElement("p");
+  answerZscore.setAttribute("id", "Z_scoreAnswer");
+  answerZscore.innerHTML = `${zScore}`;
+  divWrapAnswerContainer.appendChild(answerZscore);
+
+  KeepFormulaAppearance.push(divFormulaContainer);
+  KeepFormulaAppearance.push(divWrapAnswerContainer);
+
+}
+
+//delete div formula_container
+function deleteDivFormulaContainer(){
+  document.body.removeChild(KeepFormulaAppearance[0]);
+  document.body.removeChild(KeepFormulaAppearance[1]);
+}
+
+//Check dictionary
+function objectsAreEqual(objA, objB) {
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  for (const key of keysA) {
+    if (objA[key] !== objB[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+  

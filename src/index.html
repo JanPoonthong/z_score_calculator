@@ -14,17 +14,17 @@
     <form id="calculator_raw_score">
       <div>
         <label>Raw Score</label>
-        <input id="raw_score" type="text" />
+        <input id="raw_score" type="text" required>
         <br />
         <label>Population Mean</label>
-        <input id="population_mean" type="text" />
+        <input id="population_mean" type="text" required>
         <br />
         <label>Standard Deviation</label>
-        <input id="standard_deviation" type="text" />
+        <input id="standard_deviation" type="text" required>
       </div>
       <div>
         <button type="submit">Calculate</button>
-        <button>Clear</button>
+        <button type="reset">Clear</button>
       </div>
     </form>
 
@@ -37,7 +37,7 @@
     <p><strong>Steps:</strong></p>
     <div id="formula_container">
       <div id="z_score">
-        <span>Z score = </span>
+        <span>Z score   = </span>
       </div>
 
       <div id="z_score_formula">
@@ -46,6 +46,7 @@
         <p id="standard_deviation_symbol">σ</p>
       </div>
     </div>
-    <script src="bundle.js"></script>
+    <script src="http://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
